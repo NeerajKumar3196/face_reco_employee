@@ -12,7 +12,7 @@ class Face_Recognition_System:
 
         # bg_image 
 
-        img=Image.open(r"D:\face_rekog_attendance\face-reko-attendance\images\bg4.jpg")
+        img=Image.open(r"D:\face_rekog_employee\face_reco_employee\images\bg4.jpg")
         img=img.resize((1500,695),Image.ANTIALIAS)
         self.photoimg=ImageTk.PhotoImage(img)
 
@@ -29,7 +29,7 @@ class Face_Recognition_System:
         
         #employee button
 
-        img1=Image.open(r"D:\face_rekog_attendance\face-reko-attendance\images\employee_detail.png")
+        img1=Image.open(r"D:\face_rekog_employee\face_reco_employee\images\employee_detail.png")
         img1=img1.resize((100,100),Image.ANTIALIAS)
         self.photoimg1=ImageTk.PhotoImage(img1)
 
@@ -41,7 +41,7 @@ class Face_Recognition_System:
 
         #face detection
 
-        img2=Image.open(r"D:\face_rekog_attendance\face-reko-attendance\images\face_reko.png")
+        img2=Image.open(r"D:\face_rekog_employee\face_reco_employee\images\face_reko.png")
         img2=img2.resize((100,100),Image.ANTIALIAS)
         self.photoimg2=ImageTk.PhotoImage(img2)
 
@@ -53,10 +53,10 @@ class Face_Recognition_System:
 
         # attendance 
 
-        img3=Image.open(r"D:\face_rekog_attendance\face-reko-attendance\images\face_reko.png")
+        img3=Image.open(r"D:\face_rekog_employee\face_reco_employee\images\face_reko.png")
         img3=img3.resize((100,100),Image.ANTIALIAS)
         self.photoimg3=ImageTk.PhotoImage(img3)
-
+        
         b3=Button(bg_img,image=self.photoimg3,cursor="hand2")
         b3.place(x=100,y=400,width=150,height=150)
 
@@ -66,7 +66,7 @@ class Face_Recognition_System:
 
         #help desk
 
-        img4=Image.open(r"D:\face_rekog_attendance\face-reko-attendance\images\face_reko.png")
+        img4=Image.open(r"D:\face_rekog_employee\face_reco_employee\images\face_reko.png")
         img4=img4.resize((100,100),Image.ANTIALIAS)
         self.photoimg4=ImageTk.PhotoImage(img4)
 
@@ -79,7 +79,7 @@ class Face_Recognition_System:
 
         #Photos
 
-        img5=Image.open(r"D:\face_rekog_attendance\face-reko-attendance\images\face_reko.png")
+        img5=Image.open(r"D:\face_rekog_employee\face_reco_employee\images\face_reko.png")
         img5=img5.resize((100,100),Image.ANTIALIAS)
         self.photoimg5=ImageTk.PhotoImage(img5)
 
@@ -92,7 +92,7 @@ class Face_Recognition_System:
 
         #exit
 
-        img6=Image.open(r"D:\face_rekog_attendance\face-reko-attendance\images\face_reko.png")
+        img6=Image.open(r"D:\face_rekog_employee\face_reco_employee\images\face_reko.png")
         img6=img6.resize((100,100),Image.ANTIALIAS)
         self.photoimg6=ImageTk.PhotoImage(img6)
 
