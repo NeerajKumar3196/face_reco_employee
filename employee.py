@@ -117,8 +117,13 @@ class Employee:
         gender_label=Label(emp_inf_frame,text="Gender",font=("times new roman",12,"bold"),bg="white")
         gender_label.grid(row=1,column=0,padx=10,pady=5,sticky=W)
 
-        gender_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_gender,width=20,font=("times new roman",12,"bold"))
-        gender_entry.grid(row=1,column=1,padx=10,pady=5,sticky=W)
+        # gender_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_gender,width=20,font=("times new roman",12,"bold"))
+        # gender_entry.grid(row=1,column=1,padx=10,pady=5,sticky=W)
+
+        gender_combo=ttk.Combobox(emp_inf_frame,textvariable=self.var_gender,font=("times new roman",12,"bold"),state="readonly",width=18)
+        gender_combo["values"]=("Select","Male","Female","Other")
+        gender_combo.current(0)
+        gender_combo.grid(row=1,column=1,padx=10,pady=5, sticky=W)
 
     #Emp DOB
 
@@ -171,13 +176,13 @@ class Employee:
         save_btn=Button(btn_frame,text="Save",command=self.add_data,width=15,font=("times new roman",16,"bold"),bg="sky blue",fg="dark Green")
         save_btn.grid(row=0,column=0)
 
-        update_btn=Button(btn_frame,text="Update",width=15,font=("times new roman",16,"bold"),bg="blue",fg="Yellow")
+        update_btn=Button(btn_frame,text="Update",command=self.update_data,width=15,font=("times new roman",16,"bold"),bg="blue",fg="Yellow")
         update_btn.grid(row=0,column=1)
 
-        delete_btn=Button(btn_frame,text="Delete",width=15,font=("times new roman",16,"bold"),bg="sky blue",fg="red")
+        delete_btn=Button(btn_frame,text="Delete",command=self.delete_data,width=15,font=("times new roman",16,"bold"),bg="sky blue",fg="red")
         delete_btn.grid(row=0,column=2)
 
-        reset_btn=Button(btn_frame,text="Reset",width=15,font=("times new roman",16,"bold"),bg="blue",fg="Orange")
+        reset_btn=Button(btn_frame,text="Reset",command=self.reset_data,width=15,font=("times new roman",16,"bold"),bg="blue",fg="Orange")
         reset_btn.grid(row=0,column=3)
 
 
@@ -282,7 +287,7 @@ class Employee:
         
         self.emp_table.pack(fill=BOTH,expand=1)
         
-
+        self.emp_table.bind("<ButtonRelease>",self.get_cursor)
         self.fetch_data()
 #------------function  declaration==========
 
@@ -329,6 +334,114 @@ class Employee:
                 self.emp_table.insert("",END,values=i)
             conn.commit()
         conn.close()
+
+    #== get cursor=====
+
+    def get_cursor(self,event=""):
+        cursor_focus=self.emp_table.focus()
+        content=self.emp_table.item(cursor_focus)
+        data=content["values"]
+
+        self.var_title.set(data[0]),
+        self.var_yoj.set(data[1]),
+        self.var_loc.set(data[2]),
+        self.var_id.set(data[3]),
+        self.var_emp_name.set(data[4]),
+        self.var_gender.set(data[5]),
+        self.var_dob.set(data[6]),
+        self.var_email.set(data[7]),
+        self.var_phone.set(data[8]),
+        self.var_add.set(data[9]),
+        self.var_radio1.set(data[10])
+
+    #====UPDATE FUNCTION ====
+
+    def update_data(self):
+        if self.var_title.get()=="Select Department" or self.var_emp_name.get()=="" or self.var_id.get()=="":
+            messagebox.showerror("Error","All fields are required",parent=self.root)
+
+        else:
+            try:
+                Update1=messagebox.askyesno("Update1","Do you want tp update this employee details ",parent=self.root)
+                if Update1>0:
+                    conn=mysql.connector.connect(host="localhost",username="root",password="root",database="face_recognizer")
+                    my_cursor=conn.cursor()
+                    my_cursor.execute("update employee set Job_Title =%s,Year_Of_Joining=%s,Location=%s,Employee_name=%s,Gender=%s,DOB=%s,Email=%s,Phone_Number=%s,Address=%s,PhotoSample=%s where Employee_Id=%s",(
+
+
+
+
+                                                        self.var_title.get(),
+                                                        self.var_yoj.get(),
+                                                        self.var_loc.get(),
+                                                        self.var_emp_name.get(),
+                                                        self.var_gender.get(),
+                                                        self.var_dob.get(),
+                                                        self.var_email.get(),
+                                                        self.var_phone.get(),
+                                                        self.var_add.get(),
+                                                        self.var_radio1.get(),
+                                                        self.var_id.get(),
+                                                        
+                                                       
+
+
+
+                    ))
+
+                else:
+                    if not Update1:
+                        return
+                messagebox.showinfo("Success","Update Completed",parent=self.root)
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+            except Exception as es:
+                messagebox.showerror("Error",f"due to :{str(es)}",parent=self.root)
+
+    #=== delete  function ====
+
+    def delete_data(self):
+        if self.var_id.get()=="":
+            messagebox.showerror("Error","Employee id must be reqired ",parent=self.root)
+        else:
+            try:
+                delete=messagebox.askyesno("Employee Delete Page","do you want to delete this employee details",parent=self.root)
+                if delete>0:
+                    conn=mysql.connector.connect(host="localhost",username="root",password="root",database="face_recognizer")
+                    my_cursor=conn.cursor()
+                    sql="delete from employee where Employee_Id=%s"
+                    val=(self.var_id.get(),)
+                    my_cursor.execute(sql,val)
+
+                else:
+                    if not delete:
+                        return
+                
+                conn.commit()
+                self.fetch_data()
+                conn.close()
+                messagebox.showinfo("Delete","deleted Completed",parent=self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"due to :{str(es)}",parent=self.root)
+
+
+#====reset data=========
+
+    def reset_data(self):
+        self.var_title.set("Select Department"),
+        self.var_yoj.set("Select Year"),
+        self.var_loc.set("Select Location"),
+        self.var_id.set(""),
+        self.var_emp_name.set(""),
+        self.var_gender.set("Select"),
+        self.var_dob.set(""),
+        self.var_email.set(""),
+        self.var_phone.set(""),
+        self.var_add.set(""),
+        self.var_radio1.set("")
+
+
 
 
 
