@@ -1,6 +1,8 @@
 from tkinter import*
 from tkinter import ttk
+from tkinter import messagebox
 from PIL import Image,ImageTk
+import mysql.connector
 
 
 class Employee:
@@ -8,6 +10,20 @@ class Employee:
         self.root=root
         self.root.geometry("1400x695+0+0")
         self.root.title("Employee's Attendance Face Recognition System")
+
+    #======variables===============================
+        
+        self.var_title=StringVar()
+        self.var_yoj=StringVar()
+        self.var_loc=StringVar()
+        self.var_id=StringVar()
+        self.var_emp_name=StringVar()
+        self.var_gender=StringVar()
+        self.var_dob=StringVar()
+        self.var_email=StringVar()
+        self.var_phone=StringVar()
+        self.var_add=StringVar()
+
 
 
     #bg image
@@ -47,7 +63,7 @@ class Employee:
         dep_label=Label(current_course_frame,text="Job Title",font=("times new roman",12,"bold"),bg="white")
         dep_label.grid(row=0,column=0,padx=10)
 
-        dep_combo=ttk.Combobox(current_course_frame,font=("times new roman",12,"bold"),state="readonly")
+        dep_combo=ttk.Combobox(current_course_frame,textvariable=self.var_title,font=("times new roman",12,"bold"),state="readonly")
         dep_combo["values"]=("Select Department","Developer","IT Sales","Architect","System Engineer")
         dep_combo.current(0)
         dep_combo.grid(row=0,column=1,padx=2,pady=10)
@@ -57,7 +73,7 @@ class Employee:
         join_label=Label(current_course_frame,text="Year Of Joining",font=("times new roman",12,"bold"),bg="white")
         join_label.grid(row=0,column=2,padx=10, sticky=W)
 
-        join_combo=ttk.Combobox(current_course_frame,font=("times new roman",12,"bold"),state="readonly")
+        join_combo=ttk.Combobox(current_course_frame,textvariable=self.var_yoj,font=("times new roman",12,"bold"),state="readonly")
         join_combo["values"]=("Select Year","2017","2018","2019","2020")
         join_combo.current(0)
         join_combo.grid(row=0,column=3,padx=2,pady=10, sticky=W)
@@ -68,13 +84,13 @@ class Employee:
         loc_label=Label(current_course_frame,text="Current Location",font=("times new roman",12,"bold"),bg="white")
         loc_label.grid(row=1,column=0,padx=10, sticky=W)
 
-        loc_combo=ttk.Combobox(current_course_frame,font=("times new roman",12,"bold"),state="readonly")
+        loc_combo=ttk.Combobox(current_course_frame,textvariable=self.var_loc,font=("times new roman",12,"bold"),state="readonly")
         loc_combo["values"]=("Select Location","Bangalore","Pune","Hydeabad","Chennai")
         loc_combo.current(0)
         loc_combo.grid(row=1,column=1,padx=2,pady=10, sticky=W)
 
 
-    # Employee information
+    # ==============Employee information=====
 
         emp_inf_frame=LabelFrame(Left_frame,bd=2,relief=RIDGE,text="Employee Information",font=("times new roman",12,"bold"))
         emp_inf_frame.place(x=5,y=250,width=745,height=290)
@@ -84,7 +100,7 @@ class Employee:
         emp_id_label=Label(emp_inf_frame,text="Employee Id",font=("times new roman",12,"bold"),bg="white")
         emp_id_label.grid(row=0,column=0,padx=10,pady=5,sticky=W)
 
-        emp_id_entry=ttk.Entry(emp_inf_frame,width=20,font=("times new roman",12,"bold"))
+        emp_id_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_id,width=20,font=("times new roman",12,"bold"))
         emp_id_entry.grid(row=0,column=1,padx=10,pady=5,sticky=W)
 
 
@@ -93,7 +109,7 @@ class Employee:
         emp_nm_label=Label(emp_inf_frame,text="Employee Name",font=("times new roman",12,"bold"),bg="white")
         emp_nm_label.grid(row=0,column=2,padx=10,pady=5,sticky=W)
 
-        emp_nm_entry=ttk.Entry(emp_inf_frame,width=20,font=("times new roman",12,"bold"))
+        emp_nm_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_emp_name,width=20,font=("times new roman",12,"bold"))
         emp_nm_entry.grid(row=0,column=3,padx=10,pady=5,sticky=W)
 
     #Emp Gender
@@ -101,7 +117,7 @@ class Employee:
         gender_label=Label(emp_inf_frame,text="Gender",font=("times new roman",12,"bold"),bg="white")
         gender_label.grid(row=1,column=0,padx=10,pady=5,sticky=W)
 
-        gender_entry=ttk.Entry(emp_inf_frame,width=20,font=("times new roman",12,"bold"))
+        gender_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_gender,width=20,font=("times new roman",12,"bold"))
         gender_entry.grid(row=1,column=1,padx=10,pady=5,sticky=W)
 
     #Emp DOB
@@ -109,7 +125,7 @@ class Employee:
         dob_label=Label(emp_inf_frame,text="DOB",font=("times new roman",12,"bold"),bg="white")
         dob_label.grid(row=1,column=2,padx=10,pady=5,sticky=W)
 
-        dob_entry=ttk.Entry(emp_inf_frame,width=20,font=("times new roman",12,"bold"))
+        dob_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_dob,width=20,font=("times new roman",12,"bold"))
         dob_entry.grid(row=1,column=3,padx=10,pady=5,sticky=W)
 
     #Emp Email
@@ -117,7 +133,7 @@ class Employee:
         Email_label=Label(emp_inf_frame,text="Email",font=("times new roman",12,"bold"),bg="white")
         Email_label.grid(row=2,column=0,padx=10,pady=5,sticky=W)
 
-        Email_entry=ttk.Entry(emp_inf_frame,width=20,font=("times new roman",12,"bold"))
+        Email_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_email,width=20,font=("times new roman",12,"bold"))
         Email_entry.grid(row=2,column=1,padx=10,pady=5,sticky=W)
 
     #Emp contact
@@ -125,7 +141,7 @@ class Employee:
         phone_label=Label(emp_inf_frame,text="Phone Number",font=("times new roman",12,"bold"),bg="white")
         phone_label.grid(row=2,column=2,padx=10,pady=5,sticky=W)
 
-        phone_entry=ttk.Entry(emp_inf_frame,width=20,font=("times new roman",12,"bold"))
+        phone_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_phone,width=20,font=("times new roman",12,"bold"))
         phone_entry.grid(row=2,column=3,padx=10,pady=5,sticky=W)
 
 
@@ -135,22 +151,24 @@ class Employee:
         add_label=Label(emp_inf_frame,text="Address",font=("times new roman",12,"bold"),bg="white")
         add_label.grid(row=3,column=0,padx=10,pady=5,sticky=W)
 
-        add_entry=ttk.Entry(emp_inf_frame,width=20,font=("times new roman",12,"bold"))
+        add_entry=ttk.Entry(emp_inf_frame,textvariable=self.var_add,width=20,font=("times new roman",12,"bold"))
         add_entry.grid(row=3,column=1,padx=10,pady=5,sticky=W)
 
-    #radio button
+    #=============radio button=====
 
-        radiobtn1=ttk.Radiobutton(emp_inf_frame,text="Take Photo Sample", value="Yes")
+        self.var_radio1=StringVar()
+        radiobtn1=ttk.Radiobutton(emp_inf_frame,variable=self.var_radio1,text="Take Photo Sample",value="Yes")
         radiobtn1.grid(row=4,column=0)
 
-        radiobtn2=ttk.Radiobutton(emp_inf_frame,text="No Photo Sample", value="No")
+        
+        radiobtn2=ttk.Radiobutton(emp_inf_frame,variable=self.var_radio1,text="No Photo Sample", value="No")
         radiobtn2.grid(row=4,column=1)
 
     #btn frame
         btn_frame=LabelFrame(emp_inf_frame,bd=2,relief=RIDGE,bg="white")
         btn_frame.place(x=5,y=170,width=730,height=90)
 
-        save_btn=Button(btn_frame,text="Save",width=15,font=("times new roman",16,"bold"),bg="sky blue",fg="dark Green")
+        save_btn=Button(btn_frame,text="Save",command=self.add_data,width=15,font=("times new roman",16,"bold"),bg="sky blue",fg="dark Green")
         save_btn.grid(row=0,column=0)
 
         update_btn=Button(btn_frame,text="Update",width=15,font=("times new roman",16,"bold"),bg="blue",fg="Yellow")
@@ -226,47 +244,74 @@ class Employee:
         scroll_x=ttk.Scrollbar(Table_frame,orient=HORIZONTAL)
         scroll_y=ttk.Scrollbar(Table_frame,orient=VERTICAL)
 
-        self.emp_table=ttk.Treeview(Table_frame,column=("job title","yoj","loc","id","emp name","gender","dob","email","phone","add","photo"))
+        self.emp_table=ttk.Treeview(Table_frame,column=("title","yoj","loc","id","emp_name","gender","dob","email","phone","add","photo"))
 
         scroll_x.pack(side=BOTTOM,fill=X)
         scroll_y.pack(side=RIGHT,fill=Y)
         scroll_x.config(command=self.emp_table.xview)
         scroll_y.config(command=self.emp_table.yview)
 
-        self.emp_table.heading("job title",text="Job Title")
+        self.emp_table.heading("title",text="Job Title")
         self.emp_table.heading("yoj",text="Year Of Joining")
         self.emp_table.heading("loc",text="Current Location")
         self.emp_table.heading("id",text="Employee Id")
-        self.emp_table.heading("emp name",text="Employee Name")
+        self.emp_table.heading("emp_name",text="Employee Name")
         self.emp_table.heading("gender",text="Gender")
         self.emp_table.heading("dob",text="DOB")
         self.emp_table.heading("email",text="Email")
         self.emp_table.heading("phone",text="Phone Number")
         self.emp_table.heading("add",text="Address")
         self.emp_table.heading("photo",text="PhotoSampleStatus")
-
+        
         self.emp_table["show"]="headings"
 
        
 
         
-        # self.emp_table.column("job title",width=100)
-        # self.emp_table.column("yoj",width=100)
-        # self.emp_table.column("loc",width=100)
-        # self.emp_table.column("id",width=100)
-        # self.emp_table.column("emp name",width=100)
-        # self.emp_table.column("gender",width=100)
-        # self.emp_table.column("dob",width=100)
-        # self.emp_table.column("email",width=100)
-        # self.emp_table.column("phone",width=100)
-        # self.emp_table.column("add",width=100)
-        # self.emp_table.column("photo",width=100)
+        self.emp_table.column("title",width=150)
+        self.emp_table.column("yoj",width=150)
+        self.emp_table.column("loc",width=150)
+        self.emp_table.column("id",width=150)
+        self.emp_table.column("emp_name",width=150)
+        self.emp_table.column("gender",width=150)
+        self.emp_table.column("dob",width=150)
+        self.emp_table.column("email",width=150)
+        self.emp_table.column("phone",width=150)
+        self.emp_table.column("add",width=150)
+        self.emp_table.column("photo",width=150)
         
         self.emp_table.pack(fill=BOTH,expand=1)
 
 
+#------------function  declaration==========
 
-       
+    def add_data(self):
+        if self.var_title.get()=="Select Department" or self.var_emp_name.get()=="" or self.var_id.get()=="":
+            messagebox.showerror("Error","All fields are required",parent=self.root)
+        else:
+            try:
+                conn=mysql.connector.connect(host="localhost",username="root",password="root",database="face_recognizer")
+                my_cursor=conn.cursor()
+                my_cursor.execute("insert into employee values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
+
+                                                        self.var_title.get(),
+                                                        self.var_yoj.get(),
+                                                        self.var_loc.get(),
+                                                        self.var_id.get(),
+                                                        self.var_emp_name.get(),
+                                                        self.var_gender.get(),
+                                                        self.var_dob.get(),
+                                                        self.var_email.get(),
+                                                        self.var_phone.get(),
+                                                        self.var_add.get(),
+                                                        self.var_radio1.get()
+                ))
+
+                conn.commit()
+                conn.close()
+                messagebox.showinfo("SUCCESS","Employee details has been added",parent=self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"due to :{str(es)}",parent=self.root)
 
 if __name__ == "__main__":
     root=Tk()
