@@ -281,8 +281,9 @@ class Employee:
         self.emp_table.column("photo",width=150)
         
         self.emp_table.pack(fill=BOTH,expand=1)
+        
 
-
+        self.fetch_data()
 #------------function  declaration==========
 
     def add_data(self):
@@ -308,10 +309,28 @@ class Employee:
                 ))
 
                 conn.commit()
+                self.fetch_data()
                 conn.close()
                 messagebox.showinfo("SUCCESS","Employee details has been added",parent=self.root)
             except Exception as es:
                 messagebox.showerror("Error",f"due to :{str(es)}",parent=self.root)
+
+
+    #====== fetch data =====
+    def fetch_data(self):
+        conn=mysql.connector.connect(host="localhost",username="root",password="root",database="face_recognizer")
+        my_cursor=conn.cursor()
+        my_cursor.execute("select * from employee")
+        data=my_cursor.fetchall()
+
+        if len(data)!=0:
+            self.emp_table.delete(*self.emp_table.get_children())
+            for i in data:
+                self.emp_table.insert("",END,values=i)
+            conn.commit()
+        conn.close()
+
+
 
 if __name__ == "__main__":
     root=Tk()
