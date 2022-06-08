@@ -4,6 +4,8 @@ from tkinter import messagebox
 from PIL import Image,ImageTk
 from cv2 import COLOR_BGR2GRAY
 import mysql.connector
+from time import strftime
+from datetime import datetime
 import cv2
 import os
 import numpy as np
@@ -34,6 +36,24 @@ class Face_Recognition:
         title_lbl.place(x=0,y=0,width=1450,height=55)
 
 
+# ============= Attendance =================================
+    def mark_attendance(self,i,e,t,p):
+        with open("D:/face_rekog_employee/face_reco_employee/Attendance.csv","r+",newline="\n") as f:
+            myDatalist=f.readlines()
+            name_list=[]
+            for line in myDatalist:
+                entry=line.split((","))
+                name_list.append(entry[0])
+            if ((i not in name_list) and (e not in name_list) and (t not in name_list) and (p not in name_list)):
+                now=datetime.now()
+                d1=now.strftime("%d/%m/%y")
+                dtString=now.strftime("%H:%M:%S")
+                f.writelines(f"\n{i},{e},{t},{p},{dtString},{d1},Present")
+
+
+
+# ================= face recognition ================
+
     def face_recog(self):
         def draw_boundry(img,classifier,scaleFactor,minNeighbors,color,text,clf):
             gray_image=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -48,6 +68,10 @@ class Face_Recognition:
 
                 conn=mysql.connector.connect(host="localhost",username="root",password="root",database="face_recognizer")
                 my_cursor=conn.cursor()
+
+                my_cursor.execute("select Employee_Id from employee where Employee_Id="+str(id))
+                i=my_cursor.fetchone()
+                i="+".join(i)
 
                 my_cursor.execute("select Employee_name from employee where Employee_Id="+str(id))
                 e=my_cursor.fetchone()
@@ -65,10 +89,11 @@ class Face_Recognition:
 
 
                 if confidence>77:
+                    cv2.putText(img,f"Employee_Id:{i}",(x,y-75),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
                     cv2.putText(img,f"Employee_name:{e}",(x,y-55),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
                     cv2.putText(img,f"Job_Title:{t}",(x,y-30),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
                     cv2.putText(img,f"Phone_Number:{p}",(x,y-5),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
-
+                    self.mark_attendance(i,e,t,p)
 
                 else:
                     cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),3)
