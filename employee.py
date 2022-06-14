@@ -250,7 +250,7 @@ class Employee:
         scroll_x=ttk.Scrollbar(Table_frame,orient=HORIZONTAL)
         scroll_y=ttk.Scrollbar(Table_frame,orient=VERTICAL)
 
-        self.emp_table=ttk.Treeview(Table_frame,column=("title","yoj","loc","id","emp_name","gender","dob","email","phone","add","photo"))
+        self.emp_table=ttk.Treeview(Table_frame,column=("title","yoj","loc","id","emp_name","gender","dob","email","phone","add","photo"),xscrollcommand=scroll_x.set,yscrollcommand=scroll_y.set)
 
         scroll_x.pack(side=BOTTOM,fill=X)
         scroll_y.pack(side=RIGHT,fill=Y)

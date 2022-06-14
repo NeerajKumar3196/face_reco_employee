@@ -89,15 +89,15 @@ class Face_Recognition:
 
 
                 if confidence>77:
-                    cv2.putText(img,f"Employee_Id:{i}",(x,y-75),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
-                    cv2.putText(img,f"Employee_name:{e}",(x,y-55),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
-                    cv2.putText(img,f"Job_Title:{t}",(x,y-30),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
-                    cv2.putText(img,f"Phone_Number:{p}",(x,y-5),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
+                    cv2.putText(img,f"Employee_Id:{i}",(x,y-75),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,0),3)
+                    cv2.putText(img,f"Employee_name:{e}",(x,y-55),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,0),3)
+                    cv2.putText(img,f"Job_Title:{t}",(x,y-30),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,0),3)
+                    cv2.putText(img,f"Phone_Number:{p}",(x,y-5),cv2.FONT_HERSHEY_COMPLEX,0.8,(0,255,0),3)
                     self.mark_attendance(i,e,t,p)
 
                 else:
                     cv2.rectangle(img,(x,y),(x+w,y+h),(0,0,255),3)
-                    cv2.putText(img,"Unknown face",(x,y-5),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,255,255),3)
+                    cv2.putText(img,"Unknown face",(x,y-5),cv2.FONT_HERSHEY_COMPLEX,0.8,(255,0,0),3)
                 
                 coord=[x,y,w,y]  
             return coord
