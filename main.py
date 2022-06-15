@@ -2,6 +2,8 @@ from collections import abc
 from tkinter import*
 from tkinter import ttk
 import tkinter
+from time import strftime
+from datetime import datetime
 from PIL import Image,ImageTk
 from employee import Employee
 import os
@@ -32,6 +34,18 @@ class Face_Recognition_System:
 
         title_lbl =Label(bg_img,text="Employee's Face Recognition Attendance System Software",font=("times new Roman",35,"bold"),bg="blue",fg="white")
         title_lbl.place(x=0,y=0,width=1450,height=55)
+
+
+        #============ Time =================
+        def time():
+            string = strftime('%H:%M:%S %p')
+            lbl.config(text = string)
+            lbl.after(1000, time)
+
+        lbl = Label(title_lbl, font = ('times new roman ',14,'bold'),background='white',foreground='dark Red')
+        lbl.place(x=0,y=0,width=115,height=50)
+        time()
+        
 
 
         
