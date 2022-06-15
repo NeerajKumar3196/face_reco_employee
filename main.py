@@ -1,5 +1,7 @@
+from collections import abc
 from tkinter import*
 from tkinter import ttk
+import tkinter
 from PIL import Image,ImageTk
 from employee import Employee
 import os
@@ -102,14 +104,22 @@ class Face_Recognition_System:
         img6=img6.resize((100,100),Image.ANTIALIAS)
         self.photoimg6=ImageTk.PhotoImage(img6)
 
-        b6=Button(bg_img,image=self.photoimg6,cursor="hand2")
+        b6=Button(bg_img,image=self.photoimg6,command=self.iExit,cursor="hand2")
         b6.place(x=700,y=400,width=150,height=150)
 
-        b6_1=Button(bg_img,text="Exit",cursor="hand2",font=("times new Roman",15,"bold"),bg="blue",fg="white")
+        b6_1=Button(bg_img,text="Exit",cursor="hand2",command=self.iExit,font=("times new Roman",15,"bold"),bg="blue",fg="white")
         b6_1.place(x=690,y=550,width=170,height=30)
 
     def open_img(self):
         os.startfile("D:/face_rekog_employee/face_reco_employee/image_data")
+
+    def iExit(self):
+        self.iExit=tkinter.messagebox.askyesno("Face Recognition"," Are you sure exit this project",parent=self.root)
+        if self.iExit >0:
+            self.root.destroy()
+        else:
+            return
+
 
     #==Function butons==========
 
